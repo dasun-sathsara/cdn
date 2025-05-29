@@ -1,0 +1,127 @@
+@media print {
+    @page {
+        /* B4 Landscape (353mm x 250mm) is wider than A4 Landscape (297mm x 210mm)
+           and A4 Portrait (210mm x 297mm) */
+        size: B4 Portrait;
+        margin: 0.5cm; /* Adjust margins as needed */
+    }
+
+    body {
+        background-color: var(--vscode-light-background) !important;
+        color: var(--vscode-light-foreground) !important;
+        -webkit-print-color-adjust: exact !important; /* Chrome, Safari, Edge */
+        color-adjust: exact !important; /* Standard */
+        /* Base font settings from .markdown-preview will apply */
+    }
+
+    .markdown-preview {
+        /* Override screen-specific layout that's not ideal for print */
+        padding: 0 !important; /* Remove complex screen padding */
+        margin: 0 !important; /* Rely on @page margins */
+        width: auto !important; /* Use full printable width */
+        box-shadow: none !important; /* No shadows in print */
+        border: none !important; /* No main border for the preview area in print */
+        transition: none !important; /* No transitions in print */
+
+        /* Ensure light theme colors are explicitly set (though default) */
+        background-color: var(--vscode-light-background);
+        color: var(--vscode-light-foreground);
+        /* Font family, size, weight, line-height are inherited from existing rules */
+    }
+
+    /* Ensure all transitions are off for print */
+    .markdown-preview *,
+    .markdown-preview *::before,
+    .markdown-preview *::after {
+        transition: none !important;
+    }
+
+    /* Links: Ensure they are styled as per light theme, no hover effects */
+    .markdown-preview a,
+    .markdown-preview a:hover {
+        /* Consolidate for print */
+        color: var(--vscode-light-link) !important;
+        border-bottom-color: var(--vscode-light-link) !important;
+        text-decoration: none !important; /* As per your existing style */
+    }
+    /* Uncomment to display URLs after links in print, common practice:
+    .markdown-preview a[href^="http"]::after,
+    .markdown-preview a[href^="https"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        color: var(--vscode-light-comment);
+        word-break: break-all; // Prevent long URLs from overflowing
+    }
+    .markdown-preview a[href^="#"]::after, // Don't show for internal links
+    .markdown-preview a[href^="mailto:"]::after,
+    .markdown-preview a[href^="tel:"]::after {
+        content: "";
+    }
+    */
+
+    /* Ensure backgrounds, borders, and specific colors print correctly */
+    .markdown-preview h1, /* For border-bottom */
+    .markdown-preview h2, /* For border-bottom */
+    .markdown-preview h2[id^='you'],
+    .markdown-preview h2[id^='me'],
+    .markdown-preview hr,
+    .markdown-preview pre,
+    .markdown-preview :not(pre) > code,
+    .markdown-preview blockquote,
+    .markdown-preview th,
+    .markdown-preview tr:nth-child(even),
+    .markdown-preview img,
+    .markdown-preview table, /* For borders on table/td */
+    .markdown-preview td {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    /* Code blocks: ensure wrapping and visibility */
+    .markdown-preview pre,
+    .markdown-preview pre code, /* Target code inside pre as well */
+    .markdown-preview .katex-display {
+        /* For KaTeX display math */
+        white-space: pre-wrap !important; /* Wrap long lines */
+        word-wrap: break-word !important; /* Break long words if they overflow */
+        overflow-x: visible !important; /* Avoid content being cut off by scrollbars */
+    }
+
+    /* Page break control: avoid breaking elements undesirably */
+    .markdown-preview h1,
+    .markdown-preview h2,
+    .markdown-preview h3,
+    .markdown-preview h4,
+    .markdown-preview h5,
+    .markdown-preview h6 {
+        page-break-after: avoid; /* Don't break right after a heading */
+        page-break-inside: avoid; /* Don't break a heading itself */
+    }
+
+    .markdown-preview table,
+    .markdown-preview pre,
+    .markdown-preview blockquote,
+    .markdown-preview img,
+    .markdown-preview ul,
+    .markdown-preview ol,
+    .markdown-preview .katex-display,
+    .markdown-preview figure /* If you use figures */ {
+        page-break-inside: avoid; /* Try to keep these elements on a single page */
+    }
+
+    /* Images: ensure they scale and don't overflow */
+    .markdown-preview img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* The existing PrismJS light theme token styles are global and will apply.
+       The color-adjust: exact directive helps ensure they are printed.
+       The br tag styling is also global and will apply as defined. */
+
+    /* Remove any elements specifically marked as no-print */
+    .no-print,
+    [data-no-print] {
+        display: none !important;
+    }
+}
