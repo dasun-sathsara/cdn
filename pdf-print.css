@@ -404,10 +404,6 @@
         break-inside: auto;
     }
 
-    .markdown-preview .katex .mathnormal {
-        font-family: KaTeX_Main, serif !important; /* Preserve font family */
-    }
-
     /* --- Line Breaks --- */
     .markdown-preview br {
         line-height: 0 !important;
