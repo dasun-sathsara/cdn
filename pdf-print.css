@@ -1,42 +1,44 @@
-/* ===== FONT IMPORTS ===== */
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
-
+/* PDF Print - For black and white (grayscale) A4 optimized printing */
 @media print {
     @page {
         size: A4; /* Specify A4 paper size */
-        margin: 1cm 0.5cm;
-        padding: 0;
+        margin: 1cm 0.75cm; /* Top/Bottom margin, Left/Right margin */
     }
-
-    /* Ensure all print styles override screen styles using !important */
 
     /* --- General Body & Layout --- */
     body {
-        background-color: var(--vscode-light-background) !important;
-        color: var(--vscode-light-foreground) !important;
-        -webkit-print-color-adjust: exact !important; /* Chrome, Safari, Edge */
-        color-adjust: exact !important; /* Standard */
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        -webkit-print-color-adjust: economy !important; /* Prioritize B&W */
+        color-adjust: economy !important;
     }
 
     .markdown-preview {
-        /* Using the Comfortaa font, but a different print-specific size and line-height */
-        font-family: 'Comfortaa', sans-serif !important;
-        font-weight: 410 !important;
-        font-size: 13.25pt !important;
-        line-height: 1.38 !important;
+        font-family: 'Roboto Slab', 'Times New Roman', serif !important; /* Serif for print */
+        font-weight: normal !important; /* Normal weight, adjust if 410 was specific */
+        font-size: 11pt !important; /* Common print font size */
+        line-height: 1.4 !important;
         padding: 0 !important;
-        color: var(--vscode-light-foreground) !important;
-        background-color: var(--vscode-light-background) !important;
+        color: #000000 !important;
+        background-color: #ffffff !important;
         border: none !important;
         box-shadow: none !important;
-        transition: none !important; /* No transitions in print */
+        width: auto !important;
     }
 
-    /* Ensure all transitions are off for print */
-    .markdown-preview *,
-    .markdown-preview *::before,
-    .markdown-preview *::after {
-        transition: none !important;
+    /* --- Typography --- */
+    .markdown-preview p {
+        margin-top: 0.3em;
+        margin-bottom: 0.6em;
+        orphans: 2;
+        widows: 2;
+        text-align: justify; /* Justify text for a more formal print look */
+    }
+
+    .markdown-preview strong,
+    .markdown-preview b {
+        font-weight: bold !important; /* Standard bold */
+        color: #000000 !important;
     }
 
     /* --- Headings --- */
@@ -46,465 +48,278 @@
     .markdown-preview h4,
     .markdown-preview h5,
     .markdown-preview h6 {
-        margin-top: 0.6em !important;
-        margin-bottom: 0.3em !important;
-        color: var(--vscode-light-heading) !important; /* Use main CSS heading color */
-        border-bottom: none !important; /* Remove borders for print */
-        padding-bottom: 0 !important;
-        font-weight: 800 !important; /* Consistent with main CSS */
-        page-break-inside: avoid; /* keep heading lines together */
-        page-break-before: auto; /* allow break before if needed */
-        page-break-after: auto; /* allow break after all headings */
-        orphans: 1;
-        widows: 1;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
-    }
-    .markdown-preview h1 {
-        font-size: 15pt !important;
-    }
-    .markdown-preview h2 {
-        font-size: 14.5pt !important;
-    }
-    .markdown-preview h3 {
-        font-size: 14pt !important;
-    }
-    .markdown-preview h4 {
-        font-size: 13.5pt !important;
-    }
-    .markdown-preview h5 {
-        font-size: 13pt !important;
-    }
-    .markdown-preview h6 {
-        font-size: 13pt !important;
-        font-style: italic !important;
-    }
-
-    /* Special heading styles */
-    .markdown-preview h2[id^='you'],
-    .markdown-preview h2[id^='me'] {
-        color: var(--vscode-light-background) !important;
-        background-color: var(--vscode-light-accent) !important;
-        padding: 0.3rem 0.5rem !important;
-        font-size: 1.25rem !important; /* Retain relative size from main CSS */
-        text-align: center !important;
-        border-radius: 0.25rem !important;
+        font-family: 'Roboto Slab', 'Helvetica Neue', sans-serif !important; /* Sans-serif for headings can be good */
+        margin-top: 1em;
+        margin-bottom: 0.4em;
+        color: #000000 !important;
         border-bottom: none !important;
-    }
-
-    /* Prevent double-bolding in headings */
-    .markdown-preview h1 strong,
-    .markdown-preview h2 strong,
-    .markdown-preview h3 strong,
-    .markdown-preview h4 strong,
-    .markdown-preview h5 strong,
-    .markdown-preview h6 strong {
-        font-weight: inherit !important;
-        color: inherit !important;
-    }
-
-    /* --- Paragraphs --- */
-    .markdown-preview p {
-        margin-top: 0.2em !important;
-        margin-bottom: 0.5em !important;
-        page-break-inside: auto; /* allow splitting across pages */
+        padding-bottom: 0 !important;
+        font-weight: bold !important;
+        page-break-after: avoid;
+        page-break-inside: avoid;
         orphans: 2;
         widows: 2;
     }
+    .markdown-preview h1 { font-size: 18pt !important; margin-top: 0; } /* First h1 usually at top */
+    .markdown-preview h2 { font-size: 16pt !important; }
+    .markdown-preview h3 { font-size: 14pt !important; }
+    .markdown-preview h4 { font-size: 12pt !important; font-style: italic; }
+    .markdown-preview h5 { font-size: 11pt !important; font-weight: bold !important; }
+    .markdown-preview h6 { font-size: 11pt !important; font-style: italic; }
 
-    .markdown-preview strong,
-    .markdown-preview b {
-        color: inherit !important; /* Inherit from body/preview */
-        font-weight: bold !important; /* Consistent with main CSS */
-        page-break-inside: auto;
+    /* Special heading style for B&W print - make it subtle */
+    .markdown-preview h2[id^='you'],
+    .markdown-preview h2[id^='me'] {
+        background-color: #eeeeee !important;
+        color: #000000 !important;
+        padding: 0.2em 0.4em !important;
+        font-size: 13pt !important; /* Consistent with other headings */
+        text-align: center !important;
+        border-radius: 0 !important;
+        border: 1px solid #cccccc !important;
+        margin-top: 1.2em !important;
+        margin-bottom: 0.8em !important;
     }
+
 
     /* --- Lists --- */
     .markdown-preview ul,
     .markdown-preview ol {
-        padding-left: 1.5em !important; /* Mobile list adjustment from main CSS */
-        margin-top: 0.5em !important;
-        margin-bottom: 0.5em !important;
-        break-inside: auto;
+        padding-left: 1.8em; /* Adjust indentation for print */
+        margin-top: 0.4em;
+        margin-bottom: 0.4em;
+        page-break-inside: auto;
     }
 
     .markdown-preview li {
-        margin-bottom: 0.1em !important;
-        page-break-inside: auto; /* allow items to split */
+        margin-bottom: 0.15em;
+        page-break-inside: auto;
     }
 
     .markdown-preview li > p {
-        margin-top: 0.1em !important;
-        margin-bottom: 0.1em !important;
-        page-break-inside: auto;
+        margin-top: 0.1em;
+        margin-bottom: 0.1em;
     }
 
     /* --- Blockquotes --- */
     .markdown-preview blockquote {
-        margin: 0.5em 0 !important;
-        padding: 0.3em 0.8em !important;
-        border-left: 4px solid var(--vscode-light-accent) !important; /* Use main CSS accent color */
-        color: var(--vscode-light-foreground) !important;
-        background-color: var(--vscode-light-widget) !important;
-        font-style: italic !important;
-        border-radius: 0 0.25rem 0.25rem 0 !important; /* Consistent with main CSS */
-        page-break-inside: auto;
-        page-break-before: auto;
-        page-break-after: auto;
+        margin: 0.8em 0 0.8em 1em; /* Indent blockquotes */
+        padding: 0.4em 1em;
+        border-left: 3px solid #666666 !important;
+        color: #222222 !important;
+        background-color: #f5f5f5 !important;
+        font-style: italic;
+        page-break-inside: avoid;
         orphans: 2;
         widows: 2;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
     }
-
     .markdown-preview blockquote p {
-        margin-bottom: 0 !important;
-    }
-
-    /* --- Callout Blocks --- */
-    .markdown-preview .callout {
-        margin: 1.5rem 0 !important;
-        padding: 1rem 1.25rem !important;
-        border-radius: 0.5rem !important;
-        border-left: 4px solid !important;
-        position: relative !important;
-        background-color: var(--vscode-light-widget) !important;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
-        page-break-inside: avoid;
-    }
-
-    .markdown-preview .callout-note {
-        border-left-color: var(--callout-note) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-note) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-tip {
-        border-left-color: var(--callout-tip) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-tip) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-warning {
-        border-left-color: var(--callout-warning) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-warning) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-danger {
-        border-left-color: var(--callout-danger) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-danger) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-info {
-        border-left-color: var(--callout-info) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-info) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-title {
-        font-weight: 600 !important;
-        margin-bottom: 0.5rem !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.5rem !important;
-    }
-
-    .markdown-preview .callout-title::before {
-        content: 'ℹ️' !important;
-        font-style: normal !important;
-    }
-
-    .markdown-preview .callout-note .callout-title::before {
-        content: '📝' !important;
-    }
-    .markdown-preview .callout-tip .callout-title::before {
-        content: '💡' !important;
-    }
-    .markdown-preview .callout-warning .callout-title::before {
-        content: '⚠️' !important;
-    }
-    .markdown-preview .callout-danger .callout-title::before {
-        content: '🚨' !important;
-    }
-    .markdown-preview .callout-info .callout-title::before {
-        content: 'ℹ️' !important;
+        font-size: 10pt !important; /* Slightly smaller for quotes */
     }
 
     /* --- Horizontal Rules --- */
     .markdown-preview hr {
-        margin: 0.7em 0 !important;
-        height: 2px !important; /* Consistent with main CSS */
-        border: 0 !important;
-        background-color: var(--vscode-light-border) !important; /* Use main CSS border color */
-        page-break-before: auto;
-        page-break-after: auto;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
+        margin: 1em 0;
+        height: 1px;
+        border: 0;
+        background-color: #bbbbbb !important;
     }
 
     /* --- Tables --- */
     .markdown-preview table {
-        margin: 0.5em 0 !important;
-        font-size: 0.875rem !important; /* Mobile table adjustment from main CSS */
-        page-break-inside: avoid;
-        page-break-before: auto;
-        page-break-after: auto;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
-        /* Ensure table is visible and not cut off horizontally */
-        display: block !important;
-        overflow-x: auto !important;
-        white-space: nowrap !important;
+        margin: 1em 0;
+        font-size: 9pt !important; /* Smaller for tables */
+        width: 100% !important; /* Try to fit width */
+        border-collapse: collapse !important;
+        page-break-inside: avoid; /* Try to keep tables on one page */
     }
 
     .markdown-preview th,
     .markdown-preview td {
-        padding: 0.4em 0.6em !important; /* Mobile table adjustment from main CSS */
-        border: 1px solid var(--vscode-light-border) !important; /* Use main CSS border color */
-        color: var(--vscode-light-foreground) !important;
-        background-color: var(--vscode-light-background) !important;
+        padding: 0.25em 0.5em !important;
+        border: 1px solid #aaaaaa !important;
+        color: #000000 !important;
+        background-color: #ffffff !important;
+        word-wrap: break-word; /* Allow text wrapping in cells */
     }
 
     .markdown-preview th {
-        background-color: var(--vscode-light-widget) !important; /* Use main CSS widget color */
-        font-weight: 600 !important;
+        background-color: #e0e0e0 !important;
+        font-weight: bold !important;
+        text-align: left !important;
     }
-
-    .markdown-preview tr:nth-child(even) {
-        background-color: var(--vscode-light-widget) !important; /* Consistent with main CSS */
-    }
-
-    .markdown-preview tr:nth-child(odd) {
-        background-color: var(--vscode-light-background) !important; /* Consistent with main CSS */
-    }
+    /* No need for tr:nth-child if all are white */
 
     /* --- Images --- */
     .markdown-preview img {
-        padding: 0.5rem !important; /* Consistent with main CSS */
-        margin: 0.8em auto !important;
-        border: 1px solid var(--vscode-light-border) !important; /* Use main CSS border color */
-        background-color: var(--vscode-light-widget) !important; /* Consistent with main CSS */
-        max-width: 100% !important;
-        height: auto !important;
-        display: block !important;
-        page-break-inside: auto;
-        page-break-before: auto;
-        page-break-after: auto;
-        border-radius: 0.25rem !important; /* Consistent with main CSS */
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
+        padding: 0 !important;
+        margin: 1em auto;
+        border: 1px solid #bbbbbb !important;
+        background-color: transparent !important; /* No background for images in B&W */
+        max-width: 90% !important; /* Ensure it fits with margin */
+        max-height: 20cm !important; /* Prevent overly large images */
+        display: block;
+        page-break-inside: avoid;
     }
 
     /* --- Code Blocks & Inline Code --- */
     .markdown-preview pre,
     .markdown-preview code {
-        font-family: 'JetBrains Mono', monospace !important; /* Use specified font */
-        font-size: 0.9375rem !important; /* Consistent with main CSS */
+        font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+        color: #000000 !important;
+        background-color: #f7f7f7 !important; /* Light gray background for code */
     }
 
     .markdown-preview pre {
-        padding: 1rem !important; /* Consistent with main CSS */
-        margin: 1em 0 !important; /* Consistent with main CSS */
-        background-color: var(--vscode-light-highlight) !important; /* Use main CSS highlight color */
-        color: var(--vscode-light-foreground) !important;
-        border: 1px solid var(--vscode-light-border) !important; /* Use main CSS border color */
-        overflow-x: visible !important; /* Ensure content is visible */
+        padding: 0.6em !important;
+        margin: 0.8em 0 !important;
+        border: 1px solid #dddddd !important;
+        font-size: 9pt !important;
         white-space: pre-wrap !important; /* Wrap long lines */
-        word-wrap: break-word !important; /* Break long words */
-        position: relative !important;
-        border-radius: 0.25rem !important; /* Consistent with main CSS */
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
+        word-wrap: break-word !important;
+        page-break-inside: avoid;
+        overflow-x: hidden !important; /* Prevent scrollbars in print */
     }
 
     .markdown-preview :not(pre) > code {
-        padding: 0.1rem 0.2rem !important; /* Consistent with main CSS */
-        background-color: var(--vscode-light-widget) !important; /* Use main CSS widget color */
-        color: var(--vscode-light-foreground) !important;
-        border: 1px solid var(--vscode-light-border) !important; /* Use main CSS border color */
-        border-radius: 0.25rem !important; /* Consistent with main CSS */
-        white-space: nowrap !important;
-        page-break-inside: avoid;
+        font-size: 9.5pt !important;
+        padding: 0.1em 0.25em !important;
+        border: 1px solid #eeeeee !important;
+        border-radius: 2px !important;
+        white-space: normal !important; /* Allow inline code to wrap if necessary */
     }
 
-    .markdown-preview pre[data-role='codeBlock'] > code,
-    .markdown-preview pre[class*='language-'] code {
-        background-color: transparent !important;
-        padding: 0 !important;
-        color: inherit !important;
-        border-radius: 0 !important;
-        border: none !important;
-        font-family: inherit !important;
-        font-size: inherit !important;
-        text-shadow: none !important;
-    }
-
-    /* --- Links --- */
-    .markdown-preview a,
-    .markdown-preview a:visited {
-        color: var(--vscode-light-link) !important; /* Use main CSS link color */
-        text-decoration: none !important; /* Consistent with main CSS */
-        border-bottom: 1px solid var(--vscode-light-link) !important; /* Consistent with main CSS */
-        word-break: break-all;
-        page-break-inside: auto;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
-    }
-
-    .markdown-preview a:hover {
-        color: var(--vscode-light-accent) !important;
-        border-bottom-color: var(--vscode-light-accent) !important;
-    }
-
-    .markdown-preview a[href^='http']:not([href*='localhost']):after,
-    .markdown-preview a[href^='https']:not([href*='localhost']):after {
-        content: ' (' attr(href) ')' !important;
-        font-size: 90% !important;
-        color: var(--vscode-light-comment) !important; /* Use comment color for URL text */
-        word-break: break-all !important;
-        white-space: nowrap !important;
-        display: inline-block !important;
-        margin-left: 0.1em !important;
-        page-break-inside: auto;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
-    }
-
-    /* --- KaTeX Math (LaTeX) --- */
-    .markdown-preview .katex {
-        font-size: 1.3em !important; /* Preserve font size from main CSS */
-        margin: 0 0.15em !important;
-        page-break-inside: avoid;
-    }
-
-    .markdown-preview .katex-display {
-        font-size: 1em !important; /* Preserve font size from main CSS */
-        padding: 0.5em 0 !important; /* Preserve padding from main CSS */
-        margin: 0.25em 0 !important; /* Preserve margin from main CSS */
-        overflow-x: visible !important; /* Ensure content is visible */
-        text-align: center !important;
-        break-inside: auto;
-    }
-
-    /* --- Line Breaks --- */
-    .markdown-preview br {
-        line-height: 0 !important;
-        height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        display: none !important;
-        content: '' !important;
-        page-break-before: auto;
-        page-break-after: auto;
-    }
-
-    .markdown-preview br::after {
-        content: '' !important;
-        display: block !important;
-        margin-bottom: 0.25em !important;
-    }
-
-    /* --- PrismJS Code Highlighting --- */
-    .markdown-preview code[class*='language-'],
-    .markdown-preview pre[class*='language-'] {
-        color: var(--vscode-light-foreground) !important;
-        background: var(--vscode-light-highlight) !important;
-        text-shadow: none !important;
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
-    }
-
-    /* Token colors for light theme (re-applied for print to ensure exact rendering) */
+    /* Remove PrismJS colors for B&W print */
     .markdown-preview .token.comment,
     .markdown-preview .token.prolog,
     .markdown-preview .token.doctype,
-    .markdown-preview .token.cdata {
-        color: var(--vscode-light-comment) !important;
-        font-style: italic !important;
-    }
-
-    .markdown-preview .token.punctuation {
-        color: var(--vscode-light-foreground) !important;
-    }
-
-    .markdown-preview .token.namespace {
-        color: var(--vscode-light-type) !important;
-        opacity: 0.8 !important;
-    }
-
+    .markdown-preview .token.cdata,
+    .markdown-preview .token.punctuation,
+    .markdown-preview .token.namespace,
     .markdown-preview .token.property,
     .markdown-preview .token.tag,
     .markdown-preview .token.boolean,
     .markdown-preview .token.number,
     .markdown-preview .token.constant,
     .markdown-preview .token.symbol,
-    .markdown-preview .token.deleted {
-        color: var(--vscode-light-number) !important;
-    }
-
+    .markdown-preview .token.deleted,
     .markdown-preview .token.selector,
     .markdown-preview .token.attr-name,
     .markdown-preview .token.string,
     .markdown-preview .token.char,
     .markdown-preview .token.builtin,
-    .markdown-preview .token.inserted {
-        color: var(--vscode-light-string) !important;
-    }
-
+    .markdown-preview .token.inserted,
     .markdown-preview .token.operator,
     .markdown-preview .token.entity,
     .markdown-preview .token.url,
     .markdown-preview .language-css .token.string,
-    .markdown-preview .style .token.string {
-        color: var(--vscode-light-operator) !important;
-    }
-
+    .markdown-preview .style .token.string,
     .markdown-preview .token.atrule,
     .markdown-preview .token.attr-value,
-    .markdown-preview .token.keyword {
-        color: var(--vscode-light-keyword) !important;
-    }
-
+    .markdown-preview .token.keyword,
     .markdown-preview .token.function,
-    .markdown-preview .token.class-name {
-        color: var(--vscode-light-function) !important;
-    }
-
+    .markdown-preview .token.class-name,
     .markdown-preview .token.regex,
     .markdown-preview .token.important,
     .markdown-preview .token.variable {
-        color: var(--vscode-light-variable) !important;
+        color: #000000 !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        text-shadow: none !important;
+        background: none !important; /* Remove token-specific backgrounds */
     }
-
+    .markdown-preview .token.comment { font-style: italic !important; color: #555555 !important; } /* Make comments subtly different */
+    .markdown-preview .token.keyword,
     .markdown-preview .token.important,
-    .markdown-preview .token.bold {
+    .markdown-preview .token.builtin,
+    .markdown-preview .token.tag { font-weight: bold !important; } /* Make some keywords bold for structure */
+
+
+    /* --- Links --- */
+    .markdown-preview a,
+    .markdown-preview a:visited {
+        color: #000000 !important; /* Black links */
+        text-decoration: underline !important; /* Underline for B&W clarity */
+        word-break: break-all; /* Allow long URLs/text to break */
+    }
+
+    /* Show URLs after links (for external links) */
+    .markdown-preview a[href^="http"]:not([href*="localhost"])::after,
+    .markdown-preview a[href^="https"]:not([href*="localhost"])::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt !important; /* Smaller font for URL */
+        color: #444444 !important;
+        word-break: break-all !important;
+        white-space: normal !important; /* Allow URL to wrap */
+        display: inline;
+        margin-left: 0.2em;
+    }
+    /* Do not show for internal, mailto, tel links */
+    .markdown-preview a[href^="#"]::after,
+    .markdown-preview a[href^="mailto:"]::after,
+    .markdown-preview a[href^="tel:"]::after {
+        content: "" !important;
+    }
+
+    /* --- KaTeX Math --- */
+    .markdown-preview .katex {
+        font-size: 1.1em !important; /* Relative to surrounding text */
+        page-break-inside: avoid;
+        color: #000000 !important;
+    }
+
+    .markdown-preview .katex-display {
+        font-size: 1em !important; /* Relative to surrounding text */
+        padding: 0.1em 0 !important;
+        margin: 0.2em 0 !important;
+        overflow: visible !important; /* Ensure it's not cut */
+        text-align: center !important;
+    }
+
+    .markdown-preview .katex .mathnormal {
+        font-family: 'Times New Roman', KaTeX_Main, serif !important; /* Ensure serif for math */
+    }
+    /* Reset KaTeX element colors if any are set by default KaTeX CSS */
+    .markdown-preview .katex *, .markdown-preview .katex *::before, .markdown-preview .katex *::after {
+        color: #000000 !important;
+        border-color: #000000 !important; /* If KaTeX uses borders for fractions etc. */
+    }
+
+    /* --- Callout Blocks (B&W Print) --- */
+    .markdown-preview .callout {
+        padding: 0.4em 0.8em !important;
+        margin: 0.8em 0 !important;
+        border: 1px solid #999999 !important; /* General border */
+        border-left-width: 4px !important; /* Emphasize left border */
+        border-left-color: #333333 !important;
+        background-color: #f0f0f0 !important;
+        color: #000000 !important;
+        page-break-inside: avoid;
+        border-radius: 0 !important;
+    }
+    .markdown-preview .callout-title {
         font-weight: bold !important;
+        color: #000000 !important;
+        font-size: 1.1em !important; /* Relative to callout text */
+        margin-bottom: 0.3em !important;
     }
-
-    .markdown-preview .token.italic {
-        font-style: italic !important;
+    .markdown-preview .callout.callout-warning,
+    .markdown-preview .callout.callout-error {
+        border-left-color: #000000 !important; /* Darker left border for emphasis */
+        background-color: #e8e8e8 !important; /* Slightly different background */
     }
+    /* Other callout types will use the default .callout B&W style */
 
-    .markdown-preview .token.entity {
-        cursor: help !important;
+
+    /* --- Line Breaks (from main CSS, ensure it applies if needed) --- */
+    /* This styling is highly unconventional. Evaluate if it's truly needed for print. */
+    .markdown-preview br {
+        display: none !important; /* Hiding all <br> */
+    }
+    .markdown-preview br::after {
+        content: '' !important;
+        display: block !important;
+        margin-bottom: 0.2em !important; /* Smaller space for print */
     }
 
     /* Remove any elements specifically marked as no-print */
