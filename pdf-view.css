@@ -1,18 +1,18 @@
+/* PDF View - For a colored PDF that looks like the screen's light theme */
 @media print {
     @page {
-        /* B4 Portrait (250mm x 353mm) */
+        /* B4 Portrait (353mm x 250mm) is wider than A4 Landscape (297mm x 210mm)
+           and A4 Portrait (210mm x 297mm) */
         size: B4 Portrait;
-        margin: 0.5cm; /* Adjust margins as needed */
+        margin: 0.75cm; /* Unified margin, adjust as needed */
     }
 
-    /* Ensure colors are explicitly set for print viewing,
-     * relying on the main CSS variables for light theme defaults. */
     body {
         background-color: var(--vscode-light-background) !important;
         color: var(--vscode-light-foreground) !important;
         -webkit-print-color-adjust: exact !important; /* Chrome, Safari, Edge */
         color-adjust: exact !important; /* Standard */
-        /* Base font settings from .markdown-preview will apply */
+        /* Base font settings from .markdown-preview in main.css will apply */
     }
 
     .markdown-preview {
@@ -24,10 +24,10 @@
         border: none !important; /* No main border for the preview area in print */
         transition: none !important; /* No transitions in print */
 
-        /* Ensure light theme colors are explicitly set (though default) */
-        background-color: var(--vscode-light-background) !important;
-        color: var(--vscode-light-foreground) !important;
-        /* Font family, size, weight, line-height are inherited from existing rules */
+        /* Ensure light theme colors are explicitly set */
+        background-color: var(--vscode-light-background) !important; /* Explicit for print */
+        color: var(--vscode-light-foreground) !important; /* Explicit for print */
+        /* Font family, size, weight, line-height are inherited from main.css rules */
     }
 
     /* Ensure all transitions are off for print */
@@ -40,26 +40,29 @@
     /* Links: Ensure they are styled as per light theme, no hover effects */
     .markdown-preview a,
     .markdown-preview a:hover {
-        /* Consolidate for print */
         color: var(--vscode-light-link) !important;
         border-bottom-color: var(--vscode-light-link) !important;
-        text-decoration: none !important; /* As per your existing style */
-    }
-    /* Uncomment to display URLs after links in print, common practice: */
-    .markdown-preview a[href^='http']::after,
-    .markdown-preview a[href^='https']::after {
-        content: ' (' attr(href) ')';
-        font-size: 0.85em;
-        color: var(--vscode-light-comment);
-        word-break: break-all; /* Prevent long URLs from overflowing */
-    }
-    .markdown-preview a[href^='#']::after, /* Don't show for internal links */
-    .markdown-preview a[href^='mailto:']::after,
-    .markdown-preview a[href^='tel:']::after {
-        content: '';
+        text-decoration: none !important; /* As per main style */
     }
 
+    /* Uncomment to display URLs after links in print, common practice:
+    .markdown-preview a[href^="http"]::after,
+    .markdown-preview a[href^="https"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        color: var(--vscode-light-comment); // Use a comment color variable
+        word-break: break-all; // Prevent long URLs from overflowing
+        display: inline; // Ensure it flows with text
+    }
+    .markdown-preview a[href^="#"]::after, // Don't show for internal links
+    .markdown-preview a[href^="mailto:"]::after,
+    .markdown-preview a[href^="tel:"]::after {
+        content: "";
+    }
+    */
+
     /* Ensure backgrounds, borders, and specific colors print correctly */
+    /* This list should cover elements that have specific background/border colors in the light theme */
     .markdown-preview h1, /* For border-bottom */
     .markdown-preview h2, /* For border-bottom */
     .markdown-preview h2[id^='you'],
@@ -73,155 +76,26 @@
     .markdown-preview img,
     .markdown-preview table, /* For borders on table/td */
     .markdown-preview td,
-    .markdown-preview .callout,
-    .markdown-preview .callout-note,
-    .markdown-preview .callout-tip,
-    .markdown-preview .callout-warning,
-    .markdown-preview .callout-danger,
-    .markdown-preview .callout-info {
+    .markdown-preview .callout, /* For callout backgrounds and borders */
+    .markdown-preview code[class*='language-'], /* For PrismJS backgrounds */
+    .markdown-preview pre[class*='language-'] {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+    /* Ensure PrismJS token colors also print correctly */
+    .markdown-preview .token {
         -webkit-print-color-adjust: exact !important;
         color-adjust: exact !important;
     }
 
-    /* Headings */
-    .markdown-preview h1,
-    .markdown-preview h2,
-    .markdown-preview h3,
-    .markdown-preview h4,
-    .markdown-preview h5,
-    .markdown-preview h6 {
-        color: var(--vscode-light-heading) !important;
-    }
 
-    .markdown-preview h1 {
-        border-bottom-color: var(--vscode-light-border) !important;
-    }
-    .markdown-preview h2 {
-        border-bottom-color: var(--vscode-light-border) !important;
-    }
-
-    .markdown-preview h2[id^='you'],
-    .markdown-preview h2[id^='me'] {
-        color: var(--vscode-light-background) !important;
-        background-color: var(--vscode-light-accent) !important;
-    }
-
-    /* Separators */
-    .markdown-preview hr {
-        background-color: var(--vscode-light-border) !important;
-    }
-
-    /* Code Blocks */
-    .markdown-preview pre {
-        background-color: var(--vscode-light-highlight) !important;
-        color: var(--vscode-light-foreground) !important;
-        border-color: var(--vscode-light-border) !important;
+    /* Code blocks and KaTeX: ensure wrapping and visibility */
+    .markdown-preview pre,
+    .markdown-preview pre code, /* Target code inside pre as well */
+    .markdown-preview .katex-display {
         white-space: pre-wrap !important; /* Wrap long lines */
         word-wrap: break-word !important; /* Break long words if they overflow */
-        overflow-x: visible !important; /* Avoid content being cut off by scrollbars */
-    }
-
-    .markdown-preview :not(pre) > code {
-        background-color: var(--vscode-light-widget) !important;
-        color: var(--vscode-light-foreground) !important;
-        border-color: var(--vscode-light-border) !important;
-    }
-
-    .markdown-preview pre[data-role='codeBlock'] > code,
-    .markdown-preview pre[class*='language-'] code {
-        background-color: transparent !important;
-        color: inherit !important;
-        border: none !important;
-    }
-
-    /* Blockquotes */
-    .markdown-preview blockquote {
-        border-left-color: var(--vscode-light-accent) !important;
-        color: var(--vscode-light-foreground) !important;
-        background-color: var(--vscode-light-widget) !important;
-    }
-
-    /* Callouts */
-    .markdown-preview .callout {
-        background-color: var(--vscode-light-widget) !important;
-    }
-
-    .markdown-preview .callout-note {
-        border-left-color: var(--callout-note) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-note) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-tip {
-        border-left-color: var(--callout-tip) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-tip) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-warning {
-        border-left-color: var(--callout-warning) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-warning) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-danger {
-        border-left-color: var(--callout-danger) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-danger) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    .markdown-preview .callout-info {
-        border-left-color: var(--callout-info) !important;
-        background-color: color-mix(
-            in srgb,
-            var(--callout-info) 10%,
-            var(--vscode-light-widget)
-        ) !important;
-    }
-
-    /* Tables */
-    .markdown-preview th,
-    .markdown-preview td {
-        border-color: var(--vscode-light-border) !important;
-        color: var(--vscode-light-foreground) !important;
-    }
-
-    .markdown-preview th {
-        background-color: var(--vscode-light-widget) !important;
-    }
-
-    .markdown-preview tr:nth-child(even) {
-        background-color: var(--vscode-light-widget) !important;
-    }
-
-    .markdown-preview tr:nth-child(odd) {
-        background-color: var(--vscode-light-background) !important;
-    }
-
-    /* Images */
-    .markdown-preview img {
-        background-color: var(--vscode-light-widget) !important;
-        border-color: var(--vscode-light-border) !important;
-        max-width: 100% !important;
-        height: auto !important;
-    }
-
-    /* Math (KaTeX) */
-    .markdown-preview .katex-display {
-        overflow-x: visible !important; /* Avoid content being cut off by scrollbars */
-        break-inside: auto;
+        overflow: visible !important; /* Avoid content being cut off */
     }
 
     /* Page break control: avoid breaking elements undesirably */
@@ -230,9 +104,10 @@
     .markdown-preview h3,
     .markdown-preview h4,
     .markdown-preview h5,
-    .markdown-preview h6 {
-        page-break-after: avoid; /* Don't break right after a heading */
-        page-break-inside: avoid; /* Don't break a heading itself */
+    .markdown-preview h6,
+    .markdown-preview .callout-title {
+        page-break-after: avoid; /* Don't break right after a heading or title */
+        page-break-inside: avoid; /* Don't break a heading/title itself */
     }
 
     .markdown-preview table,
@@ -242,9 +117,20 @@
     .markdown-preview ul,
     .markdown-preview ol,
     .markdown-preview .katex-display,
+    .markdown-preview .callout,
     .markdown-preview figure /* If you use figures */ {
         page-break-inside: avoid; /* Try to keep these elements on a single page */
     }
+
+    /* Images: ensure they scale and don't overflow */
+    .markdown-preview img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* The existing PrismJS light theme token styles are global and will apply.
+       The color-adjust: exact directive helps ensure they are printed.
+       The br tag styling from main.css is also global and will apply as defined. */
 
     /* Remove any elements specifically marked as no-print */
     .no-print,
